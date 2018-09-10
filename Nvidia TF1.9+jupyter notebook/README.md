@@ -7,6 +7,10 @@ But it also adds jupyter notebook and some other useful packages like keras and 
 ## Its environment
 Ubuntu 16.04
 
+CUDA 9.0.176
+
+cuDNN 7.2.1
+
 TensorFlow 1.9
 
 ## To use it
