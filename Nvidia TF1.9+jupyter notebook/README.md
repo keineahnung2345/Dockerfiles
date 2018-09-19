@@ -17,9 +17,9 @@ TensorFlow 1.9
 ```sh
 $ docker pull nvcr.io/nvidia/tensorflow:18.07-py3
 $ git clone https://github.com/keineahnung2345/Dockerfiles.git
-$ docker build . -t nvcr.io/nvidia/tensorflow:18.08-py3-jupyter
+$ docker build . --no-cache -t nvcr.io/nvidia/tensorflow:18.08-py3-jupyter
 $ NV_GPU=<your_gpu_ids> nvidia-docker run --name tf-jupyter -td -p 8888:8888 -p 6006:6006 \
--v /root/tensorflow-tensorlog:/tensorlog -v /root/tensorflow-data:/notebooks \
+-v /home/<your_user_name>/tensorflow-tensorlog:/tensorlog -v /home/<your_user_name>/tensorflow-data:/notebooks \
 -v /var/tensorflow-dataset:/mnt -e PASSWORD=<password_for_jupyter_notebook> \
 --restart always nvcr.io/nvidia/tensorflow:18.08-py3-jupyter
 ```
