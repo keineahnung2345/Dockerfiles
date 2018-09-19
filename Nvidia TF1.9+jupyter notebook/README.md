@@ -24,6 +24,8 @@ $ NV_GPU=<your_gpu_ids> nvidia-docker run --name tf-jupyter -td -p 8888:8888 -p 
 --restart always nvcr.io/nvidia/tensorflow:18.08-py3-jupyter
 ```
 
+Note: When some packages cannot be installed, add --no-cache after docker build so that "apt-get update" will be executed
+
 And then open your browser and navigate to <http://your_host_ip:8888>, after keying in the password you have set, you can start to use jupyter notebook.
 
 ## To enter the docker you have built
