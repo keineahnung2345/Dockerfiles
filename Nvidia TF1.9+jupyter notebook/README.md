@@ -20,6 +20,8 @@ PyCuda (2018, 1, 1)
 ## To use it
 ```sh
 $ docker pull nvcr.io/nvidia/tensorflow:18.08-py3
+or 
+$ docker load -i tensorflow-1808-py3.tar.gz (if you have a tar archive of the docker image) 
 $ git clone https://github.com/keineahnung2345/Dockerfiles.git
 $ cd Dockerfiles/Nvidia TF1.9+jupyter notebook
 $ docker build . --no-cache -t nvcr.io/nvidia/tensorflow:18.08-py3-jupyter-opencv
