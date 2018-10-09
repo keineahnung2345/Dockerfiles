@@ -39,3 +39,52 @@ And then open your browser and navigate to <http://your_host_ip:8888>, after key
 ## To enter the docker you have built
 
 docker exec -it nvcr.io/nvidia/tensorflow:18.08-py3-jupyter-opencv bash
+
+## Problem encountered and solution
+### If the following error happens, try changing ip in Dockerfile and jupyter_notebook_config.py from * to 0.0.0.0 
+```
+[I 09:47:57.413 NotebookApp] Writing notebook server cookie secret to /root/.local/share/jupyter/runtime/notebook_cookie_secret
+Traceback (most recent call last):
+  File "/root/.virtualenvs/py3cv4/lib/python3.5/site-packages/traitlets/traitlets.py", line 528, in get
+    value = obj._trait_values[self.name]
+KeyError: 'allow_remote_access'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.virtualenvs/py3cv4/lib/python3.5/site-packages/notebook/notebookapp.py", line 869, in _default_allow_remote
+    addr = ipaddress.ip_address(self.ip)
+  File "/usr/lib/python3.5/ipaddress.py", line 54, in ip_address
+    address)
+ValueError: '' does not appear to be an IPv4 or IPv6 address
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.virtualenvs/py3cv4/bin/jupyter-notebook", line 11, in <module>
+    sys.exit(main())
+  File "/root/.virtualenvs/py3cv4/lib/python3.5/site-packages/jupyter_core/application.py", line 266, in launch_instance
+    return super(JupyterApp, cls).launch_instance(argv=argv, **kwargs)
+  File "/root/.virtualenvs/py3cv4/lib/python3.5/site-packages/traitlets/config/application.py", line 657, in launch_instance
+    app.initialize(argv)
+  File "<decorator-gen-7>", line 2, in initialize
+  File "/root/.virtualenvs/py3cv4/lib/python3.5/site-packages/traitlets/config/application.py", line 87, in catch_config_error
+    return method(app, *args, **kwargs)
+  File "/root/.virtualenvs/py3cv4/lib/python3.5/site-packages/notebook/notebookapp.py", line 1629, in initialize
+    self.init_webapp()
+  File "/root/.virtualenvs/py3cv4/lib/python3.5/site-packages/notebook/notebookapp.py", line 1379, in init_webapp
+    self.jinja_environment_options,
+  File "/root/.virtualenvs/py3cv4/lib/python3.5/site-packages/notebook/notebookapp.py", line 158, in __init__
+    default_url, settings_overrides, jinja_env_options)
+  File "/root/.virtualenvs/py3cv4/lib/python3.5/site-packages/notebook/notebookapp.py", line 251, in init_settings
+    allow_remote_access=jupyter_app.allow_remote_access,
+  File "/root/.virtualenvs/py3cv4/lib/python3.5/site-packages/traitlets/traitlets.py", line 556, in __get__
+    return self.get(obj, cls)
+  File "/root/.virtualenvs/py3cv4/lib/python3.5/site-packages/traitlets/traitlets.py", line 535, in get
+    value = self._validate(obj, dynamic_default())
+  File "/root/.virtualenvs/py3cv4/lib/python3.5/site-packages/notebook/notebookapp.py", line 872, in _default_allow_remote
+    for info in socket.getaddrinfo(self.ip, self.port, 0, socket.SOCK_STREAM):
+  File "/usr/lib/python3.5/socket.py", line 732, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno -5] No address associated with hostname
+```
