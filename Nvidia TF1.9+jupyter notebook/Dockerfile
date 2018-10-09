@@ -68,4 +68,4 @@ ENV CONFIG_PATH="/root/.jupyter/jupyter_notebook_config.py"
 
 COPY "jupyter_notebook_config.py" ${CONFIG_PATH}
 
-ENTRYPOINT ["sh", "-c", "jupyter notebook --allow-root -y --no-browser --ip=* --config=${CONFIG_PATH}"]
+ENTRYPOINT ["sh", "-c", "jupyter notebook --allow-root -y --no-browser --ip=0.0.0.0 --config=${CONFIG_PATH}"]
