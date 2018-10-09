@@ -2,7 +2,9 @@
 
 This docker image is based on nvcr.io/nvidia/tensorflow:18.08-py3.
 
-But it also adds jupyter notebook and some other useful packages like keras and sklearn for machine learning and deep learning.
+But it also adds jupyter notebook and some other useful packages like opencv 4.0.0, keras and sklearn for machine learning and deep learning.
+
+The installation of C++ OpenCV 4.0.0 is adopted from: http://www.codebind.com/cpp-tutorial/install-opencv-ubuntu-cpp/.
 
 ## Its environment
 Ubuntu 16.04
