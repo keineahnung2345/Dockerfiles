@@ -1,4 +1,5 @@
-FROM nvcr.io/nvidia/tensorflow:18.07-py3
+#The Installation of OpenCV4 is adopted from http://www.codebind.com/cpp-tutorial/install-opencv-ubuntu-cpp/
+FROM nvcr.io/nvidia/tensorflow:18.08-py3
 
 ENV DEBIAN_FRONTEND noninteractive
 
