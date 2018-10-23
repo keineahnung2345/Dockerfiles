@@ -1,0 +1,108 @@
+# The installation of OpenCV4.0 is adopted from 
+# https://www.pyimagesearch.com/2018/08/15/how-to-install-opencv-4-on-ubuntu/
+# Install OpenCV 4.0 on Ubuntu 16.04
+FROM nvcr.io/nvidia/tensorflow:18.08-py3
+
+RUN apt-get -y update && apt-get -y upgrade
+
+RUN apt-get install -y sudo
+
+RUN sudo apt-get install -y build-essential cmake unzip pkg-config
+
+RUN sudo apt-get install -y libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+
+RUN sudo apt-get install -y libxvidcore-dev libx264-dev
+
+RUN sudo apt-get install -y libgtk-3-dev
+
+RUN sudo apt-get install -y libatlas-base-dev gfortran
+
+RUN sudo apt-get install -y python3-dev
+
+
+## Get OpenCV
+WORKDIR /root
+
+RUN wget -O opencv.zip https://github.com/opencv/opencv/archive/4.0.0-alpha.zip
+
+RUN wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.0.0-alpha.zip
+
+RUN unzip opencv.zip
+
+RUN unzip opencv_contrib.zip
+
+RUN mv opencv-4.0.0-alpha opencv
+
+RUN mv opencv_contrib-4.0.0-alpha opencv_contrib
+
+
+## pip install NumPy
+RUN wget https://bootstrap.pypa.io/get-pip.py
+
+RUN sudo python3 get-pip.py
+
+RUN sudo pip install virtualenv virtualenvwrapper
+
+RUN sudo rm -rf ~/get-pip.py ~/.cache/pip
+
+RUN chsh
+
+RUN echo "alias python=python3" >> ~/.bashrc
+
+##https://stackoverflow.com/questions/20635472/using-the-run-instruction-in-a-dockerfile-with-source-does-not-work
+##RUN source ~/.bashrc
+#RUN ["/bin/bash" "-c" "source ~/.bashrc"]
+#
+#RUN pip install numpy
+
+#https://stackoverflow.com/questions/40044810/linux-source-command-not-working-when-building-dockerfile
+RUN /bin/bash -c "source ~/.bashrc; pip install numpy"
+
+## Install OpenCV
+WORKDIR /root/opencv
+
+RUN mkdir build
+
+WORKDIR /root/opencv/build
+
+RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
+	-D CMAKE_INSTALL_PREFIX=/usr/local \
+	-D INSTALL_PYTHON_EXAMPLES=ON \
+	-D INSTALL_C_EXAMPLES=OFF \
+	-D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules \
+	-D PYTHON_EXECUTABLE=/usr/bin/python3 \
+	-D BUILD_EXAMPLES=ON ..
+
+RUN make -j4
+
+RUN sudo make install
+
+RUN sudo ldconfig
+
+RUN ln -s /usr/local/lib/python3.5/dist-packages/cv2.cpython-35m-x86_64-linux-gnu.so cv2.so
+
+#install curses.h, which is used by cuda
+RUN apt-get install -y libncurses5-dev libncursesw5-dev
+
+## Install jupyter notebook and machine learning, deep learning packages
+RUN python3 -m pip install --upgrade pip
+
+RUN python3 -m pip install --upgrade numpy
+
+RUN python3 -m pip install jupyter keras sklearn matplotlib scikit-image h5py pycuda tqdm
+
+WORKDIR /root
+
+USER root
+
+RUN mkdir /notebooks 
+
+WORKDIR /notebooks
+
+RUN jupyter notebook --generate-config
+
+ENV CONFIG_PATH="/root/.jupyter/jupyter_notebook_config.py"
+
+COPY "jupyter_notebook_config.py" ${CONFIG_PATH}
+
+ENTRYPOINT ["sh", "-c", "jupyter notebook --allow-root -y --no-browser --ip=0.0.0.0 --config=${CONFIG_PATH}"]
