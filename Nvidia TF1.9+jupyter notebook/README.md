@@ -4,7 +4,17 @@ This docker image is based on nvcr.io/nvidia/tensorflow:18.08-py3.
 
 But it also adds jupyter notebook and some other useful packages like opencv 4.0.0, keras and sklearn for machine learning and deep learning.
 
-The installation of C++ OpenCV 4.0.0 is adopted from: http://www.codebind.com/cpp-tutorial/install-opencv-ubuntu-cpp/.
+## About Dockerfile-TF1808-OpenCV4-v1 and Dockerfile-TF1808-OpenCV4-v2
+The two Dockerfile differ in the way of installation of OpenCV4.
+Dockerfile-TF1808-OpenCV4-v2 is more stable, so it's recommended.
+
+Dockerfile-TF1808-OpenCV4-v1: 
+
+reference http://www.codebind.com/cpp-tutorial/install-opencv-ubuntu-cpp/.
+
+Dockerfile-TF1808-OpenCV4-v2: 
+
+reference https://www.pyimagesearch.com/2018/08/15/how-to-install-opencv-4-on-ubuntu/
 
 ## Its environment
 Ubuntu 16.04
@@ -26,12 +36,13 @@ or
 $ docker load -i tensorflow-1808-py3.tar.gz (if you have a tar archive of the docker image) 
 $ git clone https://github.com/keineahnung2345/Dockerfiles.git
 $ cd Dockerfiles/Nvidia TF1.9+jupyter notebook
-$ docker build . --no-cache -t nvcr.io/nvidia/tensorflow:18.08-py3-jupyter-opencv
-$ NV_GPU=<your_gpu_ids> nvidia-docker run --name tf-jupyter -td -p 8888:8888 -p 6006:6006 \
+$ docker build . --no-cache -t nvcr.io/nvidia/tensorflow:18.08-py3-jupyter-opencv4 \
+-f Dockerfile-TF1808-OpenCV4-v2
+$ NV_GPU=<your_gpu_ids> nvidia-docker run --name tf-jupyter-opencv4 -td -p 8888:8888 -p 6006:6006 \
 -v /home/<your_user_name>/tensorflow-tensorlog:/tensorlog \
 -v /home/<your_user_name>/tensorflow-data:/notebooks \
 -v /var/tensorflow-dataset:/mnt -e PASSWORD=<password_for_jupyter_notebook> \
---restart always nvcr.io/nvidia/tensorflow:18.08-py3-jupyter-opencv
+--restart always nvcr.io/nvidia/tensorflow:18.08-py3-jupyter-opencv4
 ```
 
 Note: When some packages cannot be installed, add --no-cache after docker build so that "apt-get update" will be executed
@@ -40,7 +51,7 @@ And then open your browser and navigate to <http://your_host_ip:8888>, after key
 
 ## To enter the docker you have built
 
-docker exec -it nvcr.io/nvidia/tensorflow:18.08-py3-jupyter-opencv bash
+docker exec -it tf-jupyter-opencv4 bash
 
 ## Problem encountered and solution
 ### If the following error happens, try changing ip in Dockerfile and jupyter_notebook_config.py from * to 0.0.0.0 
