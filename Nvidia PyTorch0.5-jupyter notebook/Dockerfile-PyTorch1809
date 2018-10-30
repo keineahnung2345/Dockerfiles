@@ -1,0 +1,32 @@
+FROM nvcr.io/nvidia/pytorch:18.09-py3
+
+RUN apt-get -y update && apt-get -y upgrade
+
+RUN apt-get install -y sudo
+
+## Install jupyter notebook and machine learning, deep learning packages
+RUN python3 -m pip install --upgrade pip
+
+RUN python3 -m pip install --upgrade numpy
+
+#Don't install jupyter since the docker has it already
+RUN python3 -m pip install keras sklearn matplotlib scikit-image h5py pycuda tqdm
+
+#ImportError: cannot import name 'create_prompt_application'
+RUN python3 -m pip install prompt-toolkit==1.0.15
+
+WORKDIR /root
+
+USER root
+
+RUN mkdir /notebooks
+
+WORKDIR /notebooks
+
+RUN jupyter notebook --generate-config
+
+ENV CONFIG_PATH="/root/.jupyter/jupyter_notebook_config.py"
+
+COPY "jupyter_notebook_config.py" ${CONFIG_PATH}
+
+ENTRYPOINT ["sh", "-c", "jupyter notebook --allow-root -y --no-browser --ip=0.0.0.0 --config=${CONFIG_PATH}"]
