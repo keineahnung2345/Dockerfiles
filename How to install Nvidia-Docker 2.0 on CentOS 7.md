@@ -16,9 +16,14 @@ EOF
 $ mv /boot/initramfs-`uname -r`.img /boot/initramfs-`uname -r`.img.bak
 $ wget http://mirror.centos.org/centos/6/os/x86_64/Packages/busybox-1.15.1-21.el6_6.x86_64.rpm
 $ rpm -Uvh busybox-1.15.1-21.el6_6.x86_64.rpm
-$ yum install --disablerepo=warning:fedora -y ntfs-3g
+$ yum install -y ntfs-3g
 $ dracut -v /boot/initramfs-`uname -r`.img `uname -r`
 ```
+If met with the error:
+> Cannot find a valid baseurl for repo: warning:fedora
+
+, just add `--disablerepo=warning:fedora` behind `yum install`
+
 ## Install Nvidia driver
 ```sh
 $ wget http://us.download.nvidia.com/XFree86/Linux-x86_64/390.67/NVIDIA-Linux-x86_64-390.67.run \
