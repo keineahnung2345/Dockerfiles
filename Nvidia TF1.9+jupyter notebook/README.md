@@ -50,8 +50,9 @@ Note: When some packages cannot be installed, add --no-cache after docker build 
 And then open your browser and navigate to <http://your_host_ip:8888>, after keying in the password you have set, you can start to use jupyter notebook.
 
 ## To enter the docker you have built
-
+```sh
 docker exec -it tf-jupyter-opencv4 bash
+```
 
 ## Problem encountered and solution
 ### If the following error happens, try changing ip in Dockerfile and jupyter_notebook_config.py from * to 0.0.0.0 
