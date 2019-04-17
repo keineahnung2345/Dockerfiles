@@ -51,7 +51,7 @@ And then open your browser and navigate to <http://your_host_ip:8888>, after key
 
 ## To enter the docker you have built
 ```sh
-docker exec -it tf-jupyter-opencv4 bash
+$ docker exec -it tf-jupyter-opencv4 bash
 ```
 
 ## Problem encountered and solution
